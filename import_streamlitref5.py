@@ -1,3 +1,5 @@
+pip install mysql-connector-python
+
 import streamlit as st
 import mysql.connector
 import pandas as pd
