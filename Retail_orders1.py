@@ -131,22 +131,17 @@ queries = {
         ORDER BY total_profit DESC;"""
 }                                                  
 
-# ✅ Query Selection
 query_keys = list(queries.keys())
-left_queries = query_keys[:10]  # First 6 queries for Left Side
-right_queries = query_keys[10:]  # Next 6 queries for Right Side
+left_queries = query_keys[:10]  
+right_queries = query_keys[10:] 
 
-# ✅ Create Sidebar Menu
 st.sidebar.title("Query Selection")
-
 menu = st.sidebar.radio("SELECT BETWEEN:", ["GIVEN 10 QUERIES", "ADDITIONAL 10 QUERIERS"])
-
 if menu == "GIVEN 10 QUERIES":
     selected_query_name = st.sidebar.selectbox("Select a Query", left_queries)
 elif menu == "ADDITIONAL 10 QUERIERS":
     selected_query_name = st.sidebar.selectbox("Select a Query", right_queries)
 
-# ✅ Execute and Display Query
 if selected_query_name:
     selected_query = queries[selected_query_name]
     
@@ -156,11 +151,10 @@ if selected_query_name:
         mycursor.execute(selected_query)
         data = mycursor.fetchall()
         columns = [desc[0] for desc in mycursor.description]
-
         mycursor.close()
         connection.close()
 
-        # ✅ Display SQL Query & DataFrame
-        st.code(selected_query, language="sql")  # Show SQL query
+        
+        st.code(selected_query, language="sql")  
         df = pd.DataFrame(data, columns=columns)
-        st.dataframe(df)  # Show result as a table
+        st.dataframe(df) 
