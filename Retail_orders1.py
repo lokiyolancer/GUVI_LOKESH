@@ -153,7 +153,6 @@ if selected_query_name:
         columns = [desc[0] for desc in mycursor.description]
         mycursor.close()
         connection.close()
-
         
         st.code(selected_query, language="sql")  
         df = pd.DataFrame(data, columns=columns)
