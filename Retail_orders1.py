@@ -24,7 +24,7 @@ queries = {
    
     "2.Find the top 5 cities with the highest profit margins": """SELECT orderfirst.city, SUM(orderlast.profit) AS total_profit
         FROM orderfirst
-        JOIN orderlast ON orderfirst.order_id = `orderlast`.`order_id`
+        JOIN orderlast ON orderfirst.order_id = orderlast.order_id
         GROUP BY orderfirst.city
         ORDER BY total_profit DESC
         LIMIT 5;""",
