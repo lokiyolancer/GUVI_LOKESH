@@ -12,14 +12,14 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @st.cache_data(ttl=60)
 def load_data():
-    
-    conn =  mysql.connector.connect(
-      host = "gateway01.ap-southeast-1.prod.aws.tidbcloud.com",
-      port = 4000,
-      user = "bBdMPga4tbKX2G8.root",
-      password = "7BDg7rhupeZAdIok",
-      database = "OLA",
+    conn = mysql.connector.connect(
+    host=st.secrets["db"]["host"],
+    port=st.secrets["db"]["port"],
+    user=st.secrets["db"]["user"],
+    password=st.secrets["db"]["password"],
+    database=st.secrets["db"]["database"]
 )
+    
     
     query = """
     SELECT 
