@@ -104,10 +104,10 @@ def categorize(text):
 
 
 from groq import Groq
-import streamlit as st
+import os
 
 # 🔑 TEMP: Put your API key directly (change later to env/secrets)
-GROQ_API_KEY = "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"
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 def ask_llm(prompt):
     try:
