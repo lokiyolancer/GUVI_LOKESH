@@ -103,21 +103,52 @@ def categorize(text):
     return "Other"
 
 
+from groq import Groq
+import streamlit as st
+
+# 🔑 TEMP: Put your API key directly (change later to env/secrets)
+GROQ_API_KEY = "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"
+
 def ask_llm(prompt):
     try:
-        response = requests.post(
-            "http://localhost:11434/api/generate",
-            json={
-                "model": "llama3",
-                "prompt": prompt,
-                "stream": False
-            },
-            timeout=120
+        # Initialize client
+        client = Groq(api_key=GROQ_API_KEY)
+
+        # Create completion
+        response = client.chat.completions.create(
+           model="llama-3.1-8b-instant",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a smart financial advisor. Analyze spending and give clear, practical advice."
+                },
+                {
+                    "role": "user",
+                    "content": f"""
+User spending data:
+{prompt}
+
+Give:
+- Key insights
+- Wasteful spending
+- Savings suggestions
+- Budget advice
+- Top 3 insights
+-Exact money-saving tips
+-Suggested monthly budget
+
+Keep it simple and structured.
+"""
+                }
+            ],
+            temperature=0.7,
+            max_completion_tokens=1024,
         )
-        response.raise_for_status()
-        return response.json()["response"]
+
+        return response.choices[0].message.content
+
     except Exception as e:
-        return f"LLM Error: {e}"
+        return f"LLM Error: {str(e)}"
 
 
 # ---------------- FILE UPLOAD ----------------
@@ -133,6 +164,7 @@ if uploaded_file is not None:
 
     monthly_spending = df.groupby("month")["amount"].sum()
     spending = df[df["amount"] > 0]["amount"].sum()
+    
     top_merchants = df.groupby("description")["amount"].sum().sort_values(ascending=False)
     category_spending = df.groupby("category")["amount"].sum().sort_values(ascending=False)
 
@@ -148,7 +180,6 @@ if uploaded_file is not None:
     c5, c6 = st.columns(2)
     c5.metric("Total Spending", f"₹{spending:,.2f}")
     
-
     # ---------------- DATA PREVIEW ----------------
     with st.expander("Preview cleaned data"):
         st.dataframe(df, use_container_width=True)
