@@ -128,17 +128,15 @@ def ask_llm(prompt):
 User spending data:
 {prompt}
 
-Give:
-- Key insights
-- Wasteful spending
-- Savings suggestions
-- Budget advice
-- Top 3 insights
--Exact money-saving tips
--Suggested monthly budget
+You are a financial advisor.
 
-Keep it simple and structured.
+Here is user spending:
+
+{summary}
+
+Give insights and saving suggestions.
 """
+
                 }
             ],
             temperature=0.7,
